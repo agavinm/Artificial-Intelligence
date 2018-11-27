@@ -38,7 +38,6 @@ public class NQueensLocal {
 			int costeFallos = 0;
 			int exitos = 0;
 			int costeExitos = 0;
-			int expandedNodes;
 			NQueensGoalTest goal = new NQueensGoalTest();
 			NQueensBoard boards[] = new NQueensBoard[numExperiments];
 			
@@ -70,20 +69,14 @@ public class NQueensLocal {
 						new AttackingPairsHeuristic());
 				SearchAgent agent = new SearchAgent(problem, search);
 				
-
-				
-				if (agent.getInstrumentation().getProperty("nodesExpanded") == null) expandedNodes = 0;
-				else expandedNodes = 
-						(int)Float.parseFloat(agent.getInstrumentation().getProperty("nodesExpanded"));
-				
 				if (goal.isGoalState(search.getLastSearchState())) {
 					exitos++;
-					costeExitos += expandedNodes;
+					costeExitos += agent.getActions().size();
 					//System.out.println("Exito: " + i);
 				}
 				else {
 					fallos++;
-					costeFallos += expandedNodes;
+					costeFallos += agent.getActions().size();
 					//System.out.println("Fallo: " + i);
 				}
 			}
@@ -109,7 +102,6 @@ public class NQueensLocal {
 			int fallos = 0;
 			int costeFallos = 0;
 			int costeExito = 0;
-			int expandedNodes;
 			NQueensGoalTest goal = new NQueensGoalTest();
 			HillClimbingSearch search = new HillClimbingSearch(
 					new AttackingPairsHeuristic());
@@ -124,17 +116,13 @@ public class NQueensLocal {
 						goal);
 				agent = new SearchAgent(problem, search);
 				
-				if (agent.getInstrumentation().getProperty("nodesExpanded") == null) expandedNodes = 0;
-				else expandedNodes = 
-						(int)Float.parseFloat(agent.getInstrumentation().getProperty("nodesExpanded"));
-				
 				if (goal.isGoalState(search.getLastSearchState())) {
 					encontrada = true;
-					costeExito = expandedNodes;
+					costeExito = agent.getActions().size();
 				}
 				else {
 					fallos++;
-					costeFallos += expandedNodes;
+					costeFallos += agent.getActions().size();
 				}
 			}
 
@@ -146,7 +134,7 @@ public class NQueensLocal {
 			if (fallos == 0) fallos = 1;
 			System.out.format(Locale.ENGLISH, "Coste medio fallos: %.2f%n", (double)costeFallos / 
 					(double)fallos);
-			System.out.format(Locale.ENGLISH, "Coste medio Exitos: %.2f%n", (double)costeExito);
+			System.out.format(Locale.ENGLISH, "Coste Exito: %.2f%n", (double)costeExito);
 		}
 		
 		catch (Exception e) {
